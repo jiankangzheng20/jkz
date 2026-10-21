@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>健康证明查询展示</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background-color: #f0f2f5;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .card {
+            background: #fff;
+            width: 100%;
+            max-width: 380px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            overflow: hidden;
+            margin-top: 20px;
+        }
+        .header {
+            background: #07c160;
+            color: white;
+            text-align: center;
+            padding: 15px;
+            font-size: 18px;
+            font-weight: bold;
+        }
+        .content {
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .photo-box {
+            width: 100px;
+            height: 130px;
+            border: 2px dashed #ccc;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            margin-bottom: 15px;
+            background: #fafafa;
+            cursor: pointer;
+        }
+        .photo-box img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .photo-box span {
+            color: #999;
+            font-size: 12px;
+            text-align: center;
+            padding: 5px;
+        }
+        .info-list {
+            width: 100%;
+            font-size: 14px;
+            color: #333;
+        }
+        .info-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid #eee;
+        }
+        .info-label {
+            color: #666;
+        }
+        .status {
+            color: #07c160;
+            font-weight: bold;
+        }
+        .upload-btn {
+            margin-top: 15px;
+            background: #1890ff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            width: 100%;
+        }
+        input[type="file"] {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="card">
+        <div class="header">从业人员健康检查证明</div>
+        <div class="content">
+            <!-- 头像预览区域 -->
+            <div class="photo-box" onclick="document.getElementById('fileInput').click()">
+                <img id="previewImg" style="display: none;" alt="头像">
+                <span id="tipText">点击上传照片</span>
+            </div>
+            <input type="file" id="fileInput" accept="image/*" onchange="loadPhoto(event)">
+
+            <div class="info-list">
+                <div class="info-item">
+                    <span class="info-label">体检结论</span>
+                    <span class="status">体检合格</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">行业用途</span>
+                    <span>食品化妆品</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">发证时间</span>
+                    <span id="currentDate"></span>
+                </div>
+            </div>
+
+            <button class="upload-btn" onclick="document.getElementById('fileInput').click()">选择/更换照片</button>
+        </div>
+    </div>
+
+    <script>
+        // 自动生成当前最新时间
+        const dateObj = new Date();
+        const year = dateObj.getFullYear();
+        const month = String(dateObj.getMonth() + 1).padStart(2, '0');
+        const day = String(dateObj.getDate()).padStart(2, '0');
+        document.getElementById('currentDate').innerText = `${year}-${month}-${day}`;
+
+        // 上传图片并自动显示
+        function loadPhoto(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const img = document.getElementById('previewImg');
+                    img.src = e.target.result;
+                    img.style.display = 'block';
+                    document.getElementById('tipText').style.display = 'none';
+                }
+                reader.readAsDataURL(file);
+            }
+        }
+    </script>
+</body>
+</html>
